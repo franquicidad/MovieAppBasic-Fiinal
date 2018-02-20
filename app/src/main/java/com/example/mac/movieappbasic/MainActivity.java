@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     ArrayList<Movie> adapterArrayList;
     GridView gridView;
 
+    String sortMode=MERGED_BASE_URL;
+
 
 
     @Override
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
 
+
 //        mMovieAdapter=new MovieAdapter(NUM_LIST_ITEMS, new MovieAdapter.GridItemClickListener() {
 //            @Override
 //            public void onGridItemClick(int clickedItemIndex) {
@@ -100,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<ArrayList<Movie>> onCreateLoader(int id, Bundle args) {
 
         return new
-                MovieAsynctaskLoader(this, MERGED_BASE_URL);
+                MovieAsynctaskLoader(this, sortMode);
     }
 
     @Override
@@ -125,15 +128,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id= item.getItemId();
-        if(id == R.id.top_rated){
-            new MovieAsynctaskLoader(this,MERGED_TOP_MOVIE);
-            return true;
-        }
 
-        if(id== R.id.popular){
-            new MovieAsynctaskLoader(this, MERGED_BASE_URL);
+
+        switch ( item.getItemId()) {
+            case R.id.popular:
+
+                sortMode=MERGED_BASE_URL;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID,null,MainActivity.this);
+                return true;
+            case R.id.top_rated:
+                sortMode=MERGED_TOP_MOVIE;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID,null,MainActivity.this);
+                return true;
+
+                default:
+
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }
