@@ -27,74 +27,53 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Movie>>{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Movie>> {
 
-    private static final String BASE_URL="https://api.themoviedb.org/3/movie/popular?api_key=";
-    private final String MERGED_BASE_URL= (BASE_URL+ BuildConfig.API_KEY);
-    private static final String TOP_MOVIE ="https://api.themoviedb.org/3/movie/top_rated?api_key=";
-    private static final String MERGED_TOP_MOVIE= (TOP_MOVIE+ BuildConfig.API_KEY);
-
-    private static final int NUM_LIST_ITEMS=100;
+    private static final String BASE_URL = "https://api.themoviedb.org/3/movie/popular?api_key=";
+    private static final String TOP_MOVIE = "https://api.themoviedb.org/3/movie/top_rated?api_key=";
+    private static final String MERGED_TOP_MOVIE = (TOP_MOVIE + BuildConfig.API_KEY);
+    private static final int NUM_LIST_ITEMS = 100;
     private static final int MOVIE_LOADER_ID = 1;
-    private MovieAdapter mMovieAdapter;
-    private RecyclerView mMovieList;
+    private final String MERGED_BASE_URL = (BASE_URL + BuildConfig.API_KEY);
     GridLayoutManager gridLayoutManager;
     ArrayList<Movie> adapterArrayList;
     GridView gridView;
-
-    String sortMode=MERGED_BASE_URL;
-
-
+    String sortMode = MERGED_BASE_URL;
+    private MovieAdapter mMovieAdapter;
+    private RecyclerView mMovieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMovieList=findViewById(R.id.rv_movies);
-        gridView=findViewById(R.id.gridview_layout);
+        mMovieList = findViewById(R.id.rv_movies);
+        gridView = findViewById(R.id.gridview_layout);
 
-        gridLayoutManager = new GridLayoutManager(this,2);
+        gridLayoutManager = new GridLayoutManager(this, 2);
         mMovieList.setLayoutManager(gridLayoutManager);
         mMovieList.setHasFixedSize(true);
-        mMovieAdapter=new MovieAdapter(this, NUM_LIST_ITEMS, new MovieAdapter.GridItemClickListener() {
+        mMovieAdapter = new MovieAdapter(this, NUM_LIST_ITEMS, new MovieAdapter.GridItemClickListener() {
 
             @Override
             public void onGridItemClick(Movie movie) {
 
-                Intent intentDetailActivity=new Intent(getBaseContext(),MovieDetail.class);
+                Intent intentDetailActivity = new Intent(getBaseContext(), MovieDetail.class);
 
-                intentDetailActivity.putExtra("MOVIE_OBJECT",movie);
+                intentDetailActivity.putExtra("MOVIE_OBJECT", movie);
 
                 startActivity(intentDetailActivity);
 
 
-
             }
         });
-            mMovieList.setAdapter(mMovieAdapter);
-        adapterArrayList=new ArrayList<>();
+        mMovieList.setAdapter(mMovieAdapter);
+        adapterArrayList = new ArrayList<>();
         mMovieAdapter.addAll(adapterArrayList);
 
-        LoaderManager loaderManager=getSupportLoaderManager();
+        LoaderManager loaderManager = getSupportLoaderManager();
 
-        loaderManager.initLoader(MOVIE_LOADER_ID,null,MainActivity.this);
-
-
-
-
-
-//        mMovieAdapter=new MovieAdapter(NUM_LIST_ITEMS, new MovieAdapter.GridItemClickListener() {
-//            @Override
-//            public void onGridItemClick(int clickedItemIndex) {
-//
-//                Intent intentMovieDetail=new Intent(getBaseContext(), MovieDetail.class);
-//
-//                mMovieAdapter.getItemId(clickedItemIndex);
-//
-//
-//            }
-//        })
+        loaderManager.initLoader(MOVIE_LOADER_ID, null, MainActivity.this);
 
     }
 
@@ -112,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mMovieAdapter.addAll(data);
 
 
-
     }
 
     @Override
@@ -122,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.movie_menu,menu);
+        getMenuInflater().inflate(R.menu.movie_menu, menu);
         return true;
     }
 
@@ -130,18 +108,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-        switch ( item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.popular:
-
-                sortMode=MERGED_BASE_URL;
-                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID,null,MainActivity.this);
+                sortMode = MERGED_BASE_URL;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, MainActivity.this);
                 return true;
             case R.id.top_rated:
-                sortMode=MERGED_TOP_MOVIE;
-                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID,null,MainActivity.this);
+                sortMode = MERGED_TOP_MOVIE;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, MainActivity.this);
                 return true;
 
-                default:
+            default:
 
                 return super.onOptionsItemSelected(item);
         }

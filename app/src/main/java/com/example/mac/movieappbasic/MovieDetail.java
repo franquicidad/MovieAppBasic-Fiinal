@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
  * Created by mac on 8/02/18.
  */
 
-public class MovieDetail extends AppCompatActivity{
+public class MovieDetail extends AppCompatActivity {
 
     ImageView imageDetail;
     TextView titleDetail;
@@ -27,34 +27,33 @@ public class MovieDetail extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_details_layout);
 
-        Intent intent=getIntent();
+        Intent intent = getIntent();
 
-        Movie movie=getIntent().getExtras().getParcelable("MOVIE_OBJECT");
-
-
-        String movieName=movie.getMovieName();
-        String poster=movie.getPoster_path();
-        Double voteAverage=movie.getVoteAverage();
-        String overview1=movie.getOverview();
-        String releaseDate1=movie.getReleaseDate();
+        Movie movie = getIntent().getExtras().getParcelable("MOVIE_OBJECT");
 
 
-        imageDetail=findViewById(R.id.imageMovie_detail_activity);
+        String movieName = movie.getMovieName();
+        String poster = movie.getPoster_path();
+        Double voteAverage = movie.getVoteAverage();
+        String overview1 = movie.getOverview();
+        String releaseDate1 = movie.getReleaseDate();
+
+
+        imageDetail = findViewById(R.id.imageMovie_detail_activity);
 
         Picasso.with(this).load(poster).into(imageDetail);
 
-        titleDetail =findViewById(R.id.text_movie_name);
+        titleDetail = findViewById(R.id.text_movie_name);
         titleDetail.setText(movieName);
 
-        releaseDate= findViewById(R.id.text_movie_release_date);
+        releaseDate = findViewById(R.id.text_movie_release_date);
         releaseDate.setText(releaseDate1);
 
-        ratingDetail=findViewById(R.id.text_movie_rating);
+        ratingDetail = findViewById(R.id.text_movie_rating);
         ratingDetail.setText(String.valueOf(voteAverage));
 
-        overview=findViewById(R.id.text_movie_overview);
+        overview = findViewById(R.id.text_movie_overview);
         overview.setText(overview1);
-
 
 
     }

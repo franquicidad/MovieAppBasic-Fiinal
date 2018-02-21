@@ -7,14 +7,14 @@
     android:background="#000000"
     android:orientation="vertical"
     tools:context="com.example.mac.movieappbasic.MainActivity">
+
     <ImageView
         android:id="@+id/image_movie_star_wars"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:src="@drawable/starwars"
         android:scaleType="centerCrop"
-        />
+        android:src="@drawable/starwars" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -25,15 +25,14 @@
             android:id="@+id/rv_movies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="30dp"
             android:paddingLeft="30dp"
-            android:paddingRight="30dp">
+            android:paddingRight="30dp"
+            android:paddingTop="30dp">
 
         </android.support.v7.widget.RecyclerView>
 
 
     </FrameLayout>
-
 
 
 </LinearLayout>

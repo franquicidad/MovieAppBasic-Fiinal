@@ -21,25 +21,24 @@ import java.util.ArrayList;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHolder> {
 
-    private static final String TAG = MovieAdapter.class.getName() ;
+    private static final String TAG = MovieAdapter.class.getName();
     private int mNumberItems;
     final private GridItemClickListener mOnClickListener;
     private Context mContext;
-    ArrayList<Movie> arrayListAdapter=new ArrayList<>();
+    ArrayList<Movie> arrayListAdapter = new ArrayList<>();
 
 
-
-    public interface GridItemClickListener{
+    public interface GridItemClickListener {
         void onGridItemClick(Movie movie);
     }
 
-    public MovieAdapter(Context mContext,int mNumberItems, GridItemClickListener listener) {
+    public MovieAdapter(Context mContext, int mNumberItems, GridItemClickListener listener) {
         this.mNumberItems = mNumberItems;
-        this.mOnClickListener=listener;
-        this.mContext=mContext;
+        this.mOnClickListener = listener;
+        this.mContext = mContext;
     }
 
-    public void addAll(ArrayList<Movie> movies){
+    public void addAll(ArrayList<Movie> movies) {
 
         arrayListAdapter.clear();
 
@@ -51,13 +50,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
     @Override
     public MovieAdapter.NumberViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        Context context=viewGroup.getContext();
-        int layoutDesignItem= R.layout.layout_design;
-        LayoutInflater inflater=LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately=false;
+        Context context = viewGroup.getContext();
+        int layoutDesignItem = R.layout.layout_design;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        boolean shouldAttachToParentImmediately = false;
 
-        View view= inflater.inflate(layoutDesignItem,viewGroup,shouldAttachToParentImmediately);
-        NumberViewHolder viewHolder=new NumberViewHolder(view);
+        View view = inflater.inflate(layoutDesignItem, viewGroup, shouldAttachToParentImmediately);
+        NumberViewHolder viewHolder = new NumberViewHolder(view);
 
         return viewHolder;
     }
@@ -74,7 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
         return arrayListAdapter.size();
     }
 
-    class NumberViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class NumberViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView mainImage;
         TextView movieText;
@@ -82,22 +81,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
         public NumberViewHolder(View itemView) {
             super(itemView);
 
-            mainImage=itemView.findViewById(R.id.cardview_image);
-            movieText=itemView.findViewById(R.id.movie_textView);
+            mainImage = itemView.findViewById(R.id.cardview_image);
+            movieText = itemView.findViewById(R.id.movie_textView);
 
             itemView.setOnClickListener(this);
         }
 
-        void bind(int listIndex){
+        void bind(int listIndex) {
 
-            Movie movie=arrayListAdapter.get(listIndex);
-            String movieName= movie.getMovieName();
-            Double movieAverage=movie.getVoteAverage();
-            String movieReleaseDate=movie.getReleaseDate();
-            String movieOverview=movie.getOverview();
-            String posterPath=movie.getPoster_path();
-            Log.e(TAG,"POSTER PATH--------->:");
-
+            Movie movie = arrayListAdapter.get(listIndex);
+            String movieName = movie.getMovieName();
+            Double movieAverage = movie.getVoteAverage();
+            String movieReleaseDate = movie.getReleaseDate();
+            String movieOverview = movie.getOverview();
+            String posterPath = movie.getPoster_path();
+            Log.e(TAG, "POSTER PATH--------->:");
 
 
             Picasso.with(mContext).load(posterPath).into(mainImage);
@@ -107,8 +105,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
 
         @Override
         public void onClick(View v) {
-            int clickedPosition=getAdapterPosition();
-            Movie movie=arrayListAdapter.get(clickedPosition);
+            int clickedPosition = getAdapterPosition();
+            Movie movie = arrayListAdapter.get(clickedPosition);
 
 
             mOnClickListener.onGridItemClick(movie);
