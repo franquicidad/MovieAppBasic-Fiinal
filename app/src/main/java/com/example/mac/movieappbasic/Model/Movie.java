@@ -10,13 +10,15 @@ import android.os.Parcelable;
 public class Movie implements Parcelable{
 
     private String movieName;
+    private int movie_ID;
     private String poster_path;
     private Double voteAverage;
     private String overview;
     private String releaseDate;
 
-    public Movie(String movieName, String poster_path, Double voteAverage, String overview, String releaseDate) {
+    public Movie(String movieName, int movie_ID, String poster_path, Double voteAverage, String overview, String releaseDate) {
         this.movieName = movieName;
+        this.movie_ID=movie_ID;
         this.poster_path = poster_path;
         this.voteAverage = voteAverage;
         this.overview = overview;
@@ -88,6 +90,13 @@ public class Movie implements Parcelable{
         this.releaseDate = releaseDate;
     }
 
+    public int getMovie_ID() {
+        return movie_ID;
+    }
+
+    public void setMovie_ID(int movie_ID) {
+        this.movie_ID = movie_ID;
+    }
 
     @Override
     public int describeContents() {

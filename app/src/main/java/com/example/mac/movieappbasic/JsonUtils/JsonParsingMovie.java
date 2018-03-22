@@ -137,13 +137,14 @@ public class JsonParsingMovie {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String movieName = jsonObject.getString("original_title");
                 Double voteAverage = jsonObject.getDouble("vote_average");
+                int movie_ID=jsonObject.getInt("id");
                 String overview = jsonObject.getString("overview");
                 String releaseDate = jsonObject.getString("release_date");
                 String poster_path = jsonObject.getString("poster_path");
                 poster_path = buildUrl(poster_path).toString();
 
 
-                Movie movie = new Movie(movieName, poster_path, voteAverage, overview, releaseDate);
+                Movie movie = new Movie(movieName, movie_ID,poster_path, voteAverage, overview, releaseDate);
                 listMovie.add(movie);
 
 
