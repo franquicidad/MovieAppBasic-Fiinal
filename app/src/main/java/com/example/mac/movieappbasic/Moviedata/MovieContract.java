@@ -24,6 +24,7 @@ public class MovieContract {
         public static final String TABLE_NAME="movieDataBase";
         public static final String _ID="id";
         public static final int MOVIE_IMAGE=1;
+        public static final String OVERVIEW="overview";
         public static final String MOVIE_NAME="movieName";
         public static final int RATING=1;
         public static final String RELEASE_DATE="release";
