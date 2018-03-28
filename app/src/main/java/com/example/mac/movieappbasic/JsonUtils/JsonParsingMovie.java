@@ -40,7 +40,7 @@ public class JsonParsingMovie {
 
     }
 
-    private static URL makeUrl(String stringUrl) {
+    public static URL makeUrl(String stringUrl) {
         URL url = null;
         try {
             url = new URL(stringUrl);
