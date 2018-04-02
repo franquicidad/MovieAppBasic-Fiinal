@@ -3,6 +3,7 @@ package com.example.mac.movieappbasic;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.LoaderManager;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.mac.movieappbasic.JsonUtils.JsonParsingMovie;
 import com.example.mac.movieappbasic.Model.Movie;
+import com.example.mac.movieappbasic.Moviedata.MovieContract;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -109,6 +111,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         switch (item.getItemId()) {
+
+            case R.id.favorites:
+                Intent favIntent=new Intent(this,Favorites.class);
+                startActivity(favIntent);
+                Cursor cursor= getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,new String[]{
+                        MovieContract.MovieEntry._ID,
+                        MovieContract.MovieEntry.MOVIE_IMAGE,
+                        MovieContract.MovieEntry.MOVIE_NAME,
+                        MovieContract.MovieEntry.OVERVIEW,
+                        MovieContract.MovieEntry.RATING,
+                        MovieContract.MovieEntry.RELEASE_DATE},
+                        null,
+                        null,
+                        null);
+                startManagingCursor(cursor);
             case R.id.popular:
                 sortMode = MERGED_BASE_URL;
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, MainActivity.this);

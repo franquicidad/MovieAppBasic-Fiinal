@@ -25,6 +25,12 @@
             android:parentActivityName=".MainActivity">
 
         </activity>
+        <activity
+            android:name=".Favorites"
+            android:label="Favorites"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
         <provider
             android:authorities="com.example.mac.movieappbasic"
             android:name="com.example.mac.movieappbasic.MovieContentProvider"

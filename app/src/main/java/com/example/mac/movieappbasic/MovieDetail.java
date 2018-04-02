@@ -43,8 +43,10 @@ public class MovieDetail extends AppCompatActivity {
     TextView titleDetail;
     TextView releaseDate;
     TextView ratingDetail;
+    TextView review;
     TextView overview;
     Button favButton;
+    static String moviesReview;
 
     static String youTubeKey;
 
@@ -81,6 +83,9 @@ public class MovieDetail extends AppCompatActivity {
         ratingDetail = findViewById(R.id.text_movie_rating);
         ratingDetail.setText(String.valueOf(voteAverage));
 
+        review=findViewById(R.id.review);
+        review.setText(moviesReview);
+
         overview = findViewById(R.id.text_movie_overview);
         overview.setText(overview1);
 
@@ -91,7 +96,7 @@ public class MovieDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(favButton.isActivated()) {
+
                     String movieName = movie.getMovieName();
                     Log.e(TAG, "This is the movie name:--------->");
                     String poster = movie.getPoster_path();
@@ -113,11 +118,6 @@ public class MovieDetail extends AppCompatActivity {
 
                     Toast.makeText(getBaseContext(), "Movie successfully added to favorites", Toast.LENGTH_LONG).show();
 
-                }else{
-
-                }
-
-
             }
         });
 
@@ -138,6 +138,7 @@ public class MovieDetail extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
         }
     }
 
@@ -162,6 +163,31 @@ public class MovieDetail extends AppCompatActivity {
         }
 
         return youTubeKey;
+
+    }
+
+    private static String extractReviewData(String movieJson){
+        if (TextUtils.isEmpty(movieJson)){
+            return null;
+        }
+
+        moviesReview=null;
+
+        try{
+            JSONObject root=new JSONObject(movieJson);
+            JSONArray resultArr= root.getJSONArray("results");
+            for(int i=0;i< resultArr.length();i++){
+                JSONObject resObject =resultArr.getJSONObject(i);
+                moviesReview=resObject.getString("content");
+
+            }
+        }catch (JSONException e){
+            Log.e(TAG,"Throw an exception ");
+        }
+
+        return moviesReview;
+
+
 
     }
     public static String fetchMovieTrailerData(String requestUrl){
