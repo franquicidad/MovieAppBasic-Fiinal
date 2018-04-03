@@ -1,8 +1,12 @@
 package com.example.mac.movieappbasic.JsonUtils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.mac.movieappbasic.BuildConfig;
 import com.example.mac.movieappbasic.Model.Movie;
 
 import org.json.JSONArray;
@@ -28,6 +32,11 @@ public class JsonParsingMovie {
     private static final String LOG_TAG = JsonParsingMovie.class.getSimpleName();
     private static final String IMAGE_URL = "http://image.tmdb.org/t/p/";
     private static final String SIZE_PARAM = "w185";
+    private static final String MOVIEDB_BASE_URL="https://api.themoviedb.org/3/movie";
+    private static final String PATH_VIDEOS="videos";
+    private static final String PATH_REVIEWS="reviews";
+    private static final String PARAM_API_KEY="api_key";
+    private static final String API_KEY= BuildConfig.API_KEY;
 
     String movieName = null;
     String voteAverage = null;
@@ -38,6 +47,36 @@ public class JsonParsingMovie {
 
     public JsonParsingMovie() throws JSONException {
 
+    }
+    public static URL buildTrailerUrl(int movieId){
+        Uri builtUri= Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                .appendPath(Integer.toString(movieId))
+                .appendPath(PATH_VIDEOS)
+                .appendQueryParameter(PARAM_API_KEY,API_KEY)
+                .build();
+        return  makeUrl(builtUri.toString());
+    }
+
+    public static  URL buildReviewUrl(int id){
+        Uri reviewUrl= Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                .appendPath(Integer.toString(id))
+                .appendPath(PATH_REVIEWS)
+                .appendQueryParameter(PARAM_API_KEY,API_KEY)
+                .build();
+
+        return makeUrl(reviewUrl.toString());
+
+    }
+
+    public static boolean hasInternetAccess(Context context){
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 
     public static URL makeUrl(String stringUrl) {

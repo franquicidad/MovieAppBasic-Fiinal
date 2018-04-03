@@ -3,11 +3,17 @@ package com.example.mac.movieappbasic;
 import android.content.AsyncTaskLoader;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -27,16 +33,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by mac on 8/02/18.
  */
 
-public class MovieDetail extends AppCompatActivity {
+public class MovieDetail extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,TrailersAdapter.ItemClickListener {
 
-    public static final String BASE ="https://api.themoviedb.org/3/movie/";
-    public static final String VIDEO="videos?";
+    public static final String BASE = "https://api.themoviedb.org/3/movie/";
+    public static final String VIDEO = "videos?";
 
     private static final String TAG = MovieDetail.class.getSimpleName();
     ImageView imageDetail;
@@ -46,7 +53,13 @@ public class MovieDetail extends AppCompatActivity {
     TextView review;
     TextView overview;
     Button favButton;
+    RecyclerView TrailerRv;
     static String moviesReview;
+    TrailersAdapter trailersAdapter;
+    Movie selectedMovie=null;
+    long movieDbId;
+    private static final int DETAILS_LOADER_ID=10;
+    SQLiteDatabase mDb;
 
     static String youTubeKey;
 
@@ -61,9 +74,9 @@ public class MovieDetail extends AppCompatActivity {
 
 
         String movieName = movie.getMovieName();
-        Log.e(TAG,"This is the movie name:--------->");
+        Log.e(TAG, "This is the movie name:--------->");
         String poster = movie.getPoster_path();
-        int id=movie.getMovie_ID();
+        int id = movie.getMovie_ID();
         Log.e(TAG, "This is the movie ID:----------------------------->");
         Double voteAverage = movie.getVoteAverage();
         String overview1 = movie.getOverview();
@@ -83,13 +96,18 @@ public class MovieDetail extends AppCompatActivity {
         ratingDetail = findViewById(R.id.text_movie_rating);
         ratingDetail.setText(String.valueOf(voteAverage));
 
-        review=findViewById(R.id.review);
+        review = findViewById(R.id.review);
         review.setText(moviesReview);
 
         overview = findViewById(R.id.text_movie_overview);
         overview.setText(overview1);
 
-        favButton=findViewById(R.id.favorite_add_button);
+        favButton = findViewById(R.id.favorite_add_button);
+
+        TrailerRv = (RecyclerView) findViewById(R.id.trailers_rv);
+
+
+        TrailerRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
 
         favButton.setOnClickListener(new View.OnClickListener() {
@@ -97,114 +115,233 @@ public class MovieDetail extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                    String movieName = movie.getMovieName();
-                    Log.e(TAG, "This is the movie name:--------->");
-                    String poster = movie.getPoster_path();
-                    int id = movie.getMovie_ID();
-                    Log.e(TAG, "This is the movie ID:----------------------------->");
-                    Double voteAverage = movie.getVoteAverage();
-                    String overview1 = movie.getOverview();
-                    String releaseDate1 = movie.getReleaseDate();
+                String movieName = movie.getMovieName();
+                Log.e(TAG, "This is the movie name:--------->");
+                String poster = movie.getPoster_path();
+                int id = movie.getMovie_ID();
+                Log.e(TAG, "This is the movie ID:----------------------------->");
+                Double voteAverage = movie.getVoteAverage();
+                String overview1 = movie.getOverview();
+                String releaseDate1 = movie.getReleaseDate();
 
-                    ContentValues favoriteContent = new ContentValues();
+                ContentValues favoriteContent = new ContentValues();
 
-                    favoriteContent.put(MovieContract.MovieEntry.MOVIE_NAME, movieName);
-                    favoriteContent.put(String.valueOf(MovieContract.MovieEntry.MOVIE_IMAGE), poster);
-                    favoriteContent.put(String.valueOf(MovieContract.MovieEntry.RATING), voteAverage);
-                    favoriteContent.put(MovieContract.MovieEntry.OVERVIEW, overview1);
-                    favoriteContent.put(MovieContract.MovieEntry.RELEASE_DATE, releaseDate1);
+                favoriteContent.put(MovieContract.MovieEntry.MOVIE_NAME, movieName);
+                favoriteContent.put(String.valueOf(MovieContract.MovieEntry.MOVIE_IMAGE), poster);
+                favoriteContent.put(String.valueOf(MovieContract.MovieEntry.RATING), voteAverage);
+                favoriteContent.put(MovieContract.MovieEntry.OVERVIEW, overview1);
+                favoriteContent.put(MovieContract.MovieEntry.RELEASE_DATE, releaseDate1);
 
-                    getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, favoriteContent);
+                getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, favoriteContent);
 
-                    Toast.makeText(getBaseContext(), "Movie successfully added to favorites", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Movie successfully added to favorites", Toast.LENGTH_LONG).show();
+
 
             }
         });
 
 
+        makeTrailer(id);
+        makeReview(id);
+
+
     }
 
-    private class MovieTrailerAsyncTask extends AsyncTask<String,Void,String>{
+    public void makeTrailer(int id){
+        URL trailerUrl=JsonParsingMovie.buildTrailerUrl(id);
+        if(JsonParsingMovie.hasInternetAccess(this)){
+            new MovieTrailerAsyncTask().execute(trailerUrl);
+        }
+
+    }
+
+    public void makeReview(int id){
+        URL reviewUrl= JsonParsingMovie.buildReviewUrl(id);
+        if(JsonParsingMovie.hasInternetAccess(this)){
+            new ReviewQueryTask().execute(reviewUrl);
+
+        }
+    }
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        return new android.support.v4.content.AsyncTaskLoader<Cursor>(this) {
+
+            Cursor mTaskData=null;
+
+            @Override
+            protected void onStartLoading() {
+                if(mTaskData !=null){
+                    deliverResult(mTaskData);
+                }else{
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    String[] movieId = {Integer.toString(selectedMovie.getMovie_ID())};
+                    return getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
+                            null,
+                            MovieContract.MovieEntry._ID + " = ?",
+                            movieId,
+                            null
+                    );
+                }catch (Exception e){
+                    Log.e(TAG,"Failed to load data");
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Cursor data) {
+        if(data !=null && data.getCount()>0){
+            data.moveToFirst();
+            movieDbId= data.getInt(data.getColumnIndex(MovieContract.MovieEntry._ID));
+        }else{
+            movieDbId= -1;
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Trailer selectedTrailer= trailersAdapter.getItem(position);
+
+        Intent youTube= new Intent(Intent.ACTION_VIEW,Uri.parse(selectedTrailer.getTrailerPath()));
+        startActivity(youTube);
+
+    }
+
+    private class MovieTrailerAsyncTask extends AsyncTask<URL, Void, List<Trailer>> {
+
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected List<Trailer> doInBackground(URL... urls) {
 
-            if(strings.length <1 || strings[0] == null ){
-                return null;
+            URL queryUrl = urls[0];
+            String trailerQueryResult = null;
+            List<Trailer> returnedTrailers = null;
+            try {
+                trailerQueryResult = JsonParsingMovie.makeHttpRequest(queryUrl);
+            } catch (IOException e) {
+                Log.e(TAG, "IOException" + queryUrl);
             }
-            return fetchMovieTrailerData(strings[0]);
+
+            try {
+                returnedTrailers = fetchMovieTrailerData(trailerQueryResult);
+            } catch (JSONException e) {
+                Log.e(TAG, "JsonException");
+            }
+            return returnedTrailers;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(List<Trailer> trailers) {
+            trailersAdapter = new TrailersAdapter(getApplicationContext(), trailers);
+            TrailerRv.setAdapter(trailersAdapter);
+            trailersAdapter.setClickListener(MovieDetail.this);
+
 
         }
+
     }
 
-    public static String extractTrailerData(String movieJson){
-        if (TextUtils.isEmpty(movieJson)) {
-            return null;
-        }
-        youTubeKey=null;
-        try{
+    public class ReviewQueryTask extends AsyncTask<URL,Void,List<Review>>{
 
-            JSONObject root= new JSONObject(movieJson);
-            JSONArray jsonArray=root.getJSONArray("results");
-            for(int i=0;i< jsonArray.length(); i++){
-                JSONObject keyobject = jsonArray.getJSONObject(1);
-                youTubeKey=keyobject.getString("key");
+        @Override
+        protected List<Review> doInBackground(URL... urls) {
 
+            URL queryUrl=urls[0];
+            String reviewQueryResult=null;
+            List<Review> returnedReviews=null;
+
+            try{
+                reviewQueryResult=JsonParsingMovie.makeHttpRequest(queryUrl);
+            }catch (IOException e){
+                Log.e(TAG, "IOException"+queryUrl);
             }
 
-        }catch (JSONException e){
-            Log.e(TAG,"Throw an Exception in Extraction of the movie Data ");
-
-        }
-
-        return youTubeKey;
-
-    }
-
-    private static String extractReviewData(String movieJson){
-        if (TextUtils.isEmpty(movieJson)){
-            return null;
-        }
-
-        moviesReview=null;
-
-        try{
-            JSONObject root=new JSONObject(movieJson);
-            JSONArray resultArr= root.getJSONArray("results");
-            for(int i=0;i< resultArr.length();i++){
-                JSONObject resObject =resultArr.getJSONObject(i);
-                moviesReview=resObject.getString("content");
-
+            try {
+                returnedReviews=parseReviewsJSON(reviewQueryResult);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }catch (JSONException e){
-            Log.e(TAG,"Throw an exception ");
+
+            return returnedReviews;
         }
 
-        return moviesReview;
-
-
-
-    }
-    public static String fetchMovieTrailerData(String requestUrl){
-        URL url = JsonParsingMovie.makeUrl(requestUrl);
-        String jsonResponse = null;
-        try {
-            jsonResponse = JsonParsingMovie.makeHttpRequest(url);
-
-            Log.e("karim","result"+jsonResponse);
-
-        } catch (IOException e) {
-            Log.e("", "Throw an Exception in fetchMovieAppData", e);
+        @Override
+        protected void onPostExecute(List<Review> reviews) {
+            super.onPostExecute(reviews);
         }
-        return extractTrailerData(jsonResponse);
-
-
     }
 
 
-}
+    public static List<Review> parseReviewsJSON(String string) throws JSONException{
+        List<Review> finalReviewsList = new ArrayList<Review>();
+        JSONObject result = new JSONObject(string);
+
+        if(result.has("results") && result.getJSONArray("results").length() != 0){
+            JSONArray reviewsList = result.getJSONArray("results");
+
+            for(int i = 0; i < reviewsList.length(); i++){
+                JSONObject review = reviewsList.getJSONObject(i);
+
+
+                String content = "N/A";
+                if(review.has("content")){
+                    if(!review.getString("content").equals("")){
+                        content = review.getString("content");
+                    }
+
+                }
+                finalReviewsList.add(new Review(content));
+            }
+        }
+
+        return finalReviewsList;
+    }
+
+    public static List<Trailer> fetchMovieTrailerData(String string) throws JSONException {
+
+        List<Trailer> videoList = new ArrayList<>();
+        JSONObject result = new JSONObject(string);
+
+        if (result.has("results")) {
+            JSONArray trailersList = result.getJSONArray("results");
+
+            if (trailersList.length() != 0) {
+                for (int i = 0; i < trailersList.length(); i++) {
+                    JSONObject trailer = trailersList.getJSONObject(i);
+
+                    String trailerPath = "N/A";
+                    if (trailer.has("key")) {
+                        if (!trailer.getString("key").equals("")) {
+                            trailerPath = trailer.getString("key");
+                        }
+                    }
+
+                        String trailerName = "Trailer";
+                        if (trailer.has("name")) {
+                            if (!trailer.getString("name").equals("")) {
+                                trailerName = trailer.getString("name");
+                            }
+                        }
+                        videoList.add(new Trailer(trailerName, trailerPath));
+                    }
+                }
+            }
+            return videoList;
+        }
+    }
