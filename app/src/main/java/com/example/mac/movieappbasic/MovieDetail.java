@@ -144,15 +144,34 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         MenuInflater inflater= getMenuInflater();
         inflater.inflate(R.menu.detail_favorite,menu);
 
-        MenuItem favoriteIcon=menu.getItem(0);
-        if(movieDbId != -1){
-            favoriteIcon.setIcon(R.drawable.ic_favorite);
-        }else{
+        Cursor cursor=getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
+                null,
+                MovieContract.MovieEntry.MOVIE_ID,
+                null,
+                null);
+        int containerCursor=cursor.getCount();
+        MenuItem favoriteIcon= menu.getItem(0);
+
+        if(containerCursor == 0) {
             favoriteIcon.setIcon(R.drawable.ic_favorite_border);
+        }else {
+            favoriteIcon.setIcon(R.drawable.ic_favorite);
+        }
+        return false;
+
+
+
         }
 
-        return true;
-    }
+//        MenuItem favoriteIcon=menu.getItem(0);
+//        if(movieDbId != -1){
+//            favoriteIcon.setIcon(R.drawable.ic_favorite);
+//        }else{
+//            favoriteIcon.setIcon(R.drawable.ic_favorite_border);
+//        }
+
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -181,7 +200,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         ContentValues favoriteContent = new ContentValues();
 
         favoriteContent.put(MovieContract.MovieEntry.MOVIE_NAME, movie.getMovieName());
-        favoriteContent.put(MovieContract.MovieEntry._ID,movie.getMovie_ID());
+        favoriteContent.put(MovieContract.MovieEntry.MOVIE_ID, movie.getMovie_ID());
         favoriteContent.put(String.valueOf(MovieContract.MovieEntry.MOVIE_IMAGE), movie.getPoster_path());
         favoriteContent.put(String.valueOf(MovieContract.MovieEntry.RATING), movie.getVoteAverage());
         favoriteContent.put(MovieContract.MovieEntry.OVERVIEW, movie.getOverview());

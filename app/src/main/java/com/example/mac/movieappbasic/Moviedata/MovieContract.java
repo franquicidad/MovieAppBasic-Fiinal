@@ -23,6 +23,7 @@ public class MovieContract {
 
         public static final String TABLE_NAME="movieDataBase";
         public static final String _ID="id";
+        public static final String MOVIE_ID="movieId";
         public static final String MOVIE_IMAGE="movieImage";
         public static final String OVERVIEW="overview";
         public static final String MOVIE_NAME="movieName";
