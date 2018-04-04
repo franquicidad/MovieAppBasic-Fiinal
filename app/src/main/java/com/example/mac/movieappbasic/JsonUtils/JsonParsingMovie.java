@@ -48,9 +48,9 @@ public class JsonParsingMovie {
     public JsonParsingMovie() throws JSONException {
 
     }
-    public static URL buildTrailerUrl(int movieId){
+    public static URL buildTrailerUrl(int id){
         Uri builtUri= Uri.parse(MOVIEDB_BASE_URL).buildUpon()
-                .appendPath(Integer.toString(movieId))
+                .appendPath(Integer.toString(id))
                 .appendPath(PATH_VIDEOS)
                 .appendQueryParameter(PARAM_API_KEY,API_KEY)
                 .build();

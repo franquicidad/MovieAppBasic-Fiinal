@@ -22,8 +22,8 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
     private Context mContext;
     private  ItemClickListener mClickListener;
 
-    public TrailersAdapter(Context context, List<Trailer> mData) {
-        this.mData = mData;
+    public TrailersAdapter(Context context, List<Trailer> data) {
+        this.mData = data;
         this.mContext = context;
         mLayoutInflater=LayoutInflater.from(context);
     }
@@ -35,7 +35,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(TrailersAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         Trailer trailer=mData.get(position);
         String videoId=trailer.getTrailerRawPath();
         String videoUrl ="http://img.youtube.com/vi/"+videoId+"/0.jpg";
