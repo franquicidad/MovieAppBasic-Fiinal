@@ -65,6 +65,8 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
     private static final int DETAILS_LOADER_ID=10;
     SQLiteDatabase mDb;
 
+    Movie movie;
+
     static String youTubeKey;
 
     @Override
@@ -115,19 +117,6 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
 
 
 
-
-                movieName = movie.getMovieName();
-                Log.e(TAG, "This is the movie name:--------->");
-                poster = movie.getPoster_path();
-                id = movie.getMovie_ID();
-                Log.e(TAG, "This is the movie ID:----------------------------->");
-                 voteAverage = movie.getVoteAverage();
-                 overview1 = movie.getOverview();
-                 releaseDate1 = movie.getReleaseDate();
-
-
-
-
                 Toast.makeText(getBaseContext(), "Movie successfully added to favorites", Toast.LENGTH_LONG).show();
 
 
@@ -144,12 +133,24 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         MenuInflater inflater= getMenuInflater();
         inflater.inflate(R.menu.detail_favorite,menu);
 
-        Cursor cursor=getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
-                null,
-                MovieContract.MovieEntry.MOVIE_ID,
-                null,
-                null);
+        final Movie movie = getIntent().getExtras().getParcelable("MOVIE_OBJECT");
+
+        int movie_id=movie.getMovie_ID();
+
+
+
+        Uri uri= MovieContract.MovieEntry.CONTENT_URI;
+        String [] projection={MovieContract.MovieEntry._ID,
+                MovieContract.MovieEntry.MOVIE_ID};
+        String [] selection= {MovieContract.MovieEntry.MOVIE_ID+ "=?"};
+        String[] selectionArgs={String.valueOf(movie_id)};
+
+
+        Cursor cursor=getContentResolver().query( uri,projection, String.valueOf(selection),selectionArgs,null);
+
         int containerCursor=cursor.getCount();
+
+        int cursorMovieId=cursor.getInt(Integer.parseInt(MovieContract.MovieEntry.MOVIE_ID));
         MenuItem favoriteIcon= menu.getItem(0);
 
         if(containerCursor == 0) {
@@ -157,7 +158,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         }else {
             favoriteIcon.setIcon(R.drawable.ic_favorite);
         }
-        return false;
+        return true;
 
 
 
