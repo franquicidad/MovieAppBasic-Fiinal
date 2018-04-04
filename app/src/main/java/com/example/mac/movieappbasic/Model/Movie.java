@@ -26,8 +26,10 @@ public class Movie implements Parcelable{
 
     }
 
+
     protected Movie(Parcel in) {
         movieName = in.readString();
+        movie_ID = in.readInt();
         poster_path = in.readString();
         if (in.readByte() == 0) {
             voteAverage = null;
@@ -98,6 +100,7 @@ public class Movie implements Parcelable{
         this.movie_ID = movie_ID;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -106,6 +109,7 @@ public class Movie implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(movieName);
+        dest.writeInt(movie_ID);
         dest.writeString(poster_path);
         if (voteAverage == null) {
             dest.writeByte((byte) 0);

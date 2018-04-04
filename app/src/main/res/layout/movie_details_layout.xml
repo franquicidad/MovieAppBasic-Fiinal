@@ -37,28 +37,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1 "
-                android:layout_height="match_parent"
-                android:text="Add movie to favorites"
-                android:textColor="@android:color/white"
-                android:paddingTop="28dp"
-                />
-            <Button
-                android:id="@+id/favorite_add_button"
-                android:background="@android:drawable/star_big_on"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingTop="30dp"
+                android:paddingTop="20dp"
                 android:text="Release Date:"
 
                 android:textColor="@android:color/white"
@@ -94,7 +73,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:paddingLeft="70dp"
-                android:paddingTop="30dp"
+                android:paddingTop="20dp"
 
                 android:text="20/06/1982"
                 android:textColor="@android:color/white"
@@ -131,7 +110,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:paddingTop="35dp"
+                android:paddingTop="15dp"
                 android:text="Rating:"
 
                 android:textColor="@android:color/white"
@@ -146,15 +125,15 @@
 
                 android:hint="7.9"
                 android:gravity="center"
-                android:paddingTop="28dp"
+                android:paddingTop="15dp"
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
             <RatingBar
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="6"
-                android:paddingTop="24dp"
+                android:paddingTop="5dp"
                 android:stepSize="1"
                 android:numStars="5"
                 android:textColor="@android:color/white" />

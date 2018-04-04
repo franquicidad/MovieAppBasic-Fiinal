@@ -10,12 +10,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -102,7 +106,6 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         overview = findViewById(R.id.text_movie_overview);
         overview.setText(overview1);
 
-        favButton = findViewById(R.id.favorite_add_button);
 
         TrailerRv = (RecyclerView) findViewById(R.id.trailers_rv);
 
@@ -110,41 +113,92 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         TrailerRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
 
-        favButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
 
-                String movieName = movie.getMovieName();
+
+                movieName = movie.getMovieName();
                 Log.e(TAG, "This is the movie name:--------->");
-                String poster = movie.getPoster_path();
-                int id = movie.getMovie_ID();
+                poster = movie.getPoster_path();
+                id = movie.getMovie_ID();
                 Log.e(TAG, "This is the movie ID:----------------------------->");
-                Double voteAverage = movie.getVoteAverage();
-                String overview1 = movie.getOverview();
-                String releaseDate1 = movie.getReleaseDate();
+                 voteAverage = movie.getVoteAverage();
+                 overview1 = movie.getOverview();
+                 releaseDate1 = movie.getReleaseDate();
 
-                ContentValues favoriteContent = new ContentValues();
 
-                favoriteContent.put(MovieContract.MovieEntry.MOVIE_NAME, movieName);
-                favoriteContent.put(String.valueOf(MovieContract.MovieEntry.MOVIE_IMAGE), poster);
-                favoriteContent.put(String.valueOf(MovieContract.MovieEntry.RATING), voteAverage);
-                favoriteContent.put(MovieContract.MovieEntry.OVERVIEW, overview1);
-                favoriteContent.put(MovieContract.MovieEntry.RELEASE_DATE, releaseDate1);
 
-                getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, favoriteContent);
 
                 Toast.makeText(getBaseContext(), "Movie successfully added to favorites", Toast.LENGTH_LONG).show();
 
 
-            }
-        });
 
 
         makeTrailer(id);
         makeReview(id);
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater= getMenuInflater();
+        inflater.inflate(R.menu.detail_favorite,menu);
+
+        MenuItem favoriteIcon=menu.getItem(0);
+        if(movieDbId != -1){
+            favoriteIcon.setIcon(R.drawable.ic_favorite);
+        }else{
+            favoriteIcon.setIcon(R.drawable.ic_favorite_border);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case  R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.favorite_heart:
+                if(movieDbId != -1){
+                    item.setIcon(R.drawable.ic_favorite_border);
+                    removeMovie(movieDbId);
+                    movieDbId= -1;
+                }else{
+                    item.setIcon(R.drawable.ic_favorite);
+                    movieDbId=addNewMovie(selectedMovie);
+                }
+                return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private long addNewMovie(Movie movie) {
+
+        ContentValues favoriteContent = new ContentValues();
+
+        favoriteContent.put(MovieContract.MovieEntry.MOVIE_NAME, movie.getMovieName());
+        favoriteContent.put(MovieContract.MovieEntry._ID,movie.getMovie_ID());
+        favoriteContent.put(String.valueOf(MovieContract.MovieEntry.MOVIE_IMAGE), movie.getPoster_path());
+        favoriteContent.put(String.valueOf(MovieContract.MovieEntry.RATING), movie.getVoteAverage());
+        favoriteContent.put(MovieContract.MovieEntry.OVERVIEW, movie.getOverview());
+        favoriteContent.put(MovieContract.MovieEntry.RELEASE_DATE, movie.getReleaseDate());
+
+        Uri uri=getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, favoriteContent);
+        String id2=uri.getPathSegments().get(1);
+        return Long.parseLong(id2);
+
+    }
+
+    private void removeMovie(long id) {
+        String stringId= Long.toString(id);
+        Uri uri= MovieContract.MovieEntry.CONTENT_URI;
+        uri= uri.buildUpon().appendPath(stringId).build();
+
+        getContentResolver().delete(uri,null,null);
     }
 
     public void makeTrailer(int id){
