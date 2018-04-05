@@ -64,6 +64,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
     long movieDbId;
     private static final int DETAILS_LOADER_ID=10;
     SQLiteDatabase mDb;
+    boolean favoriteMovie=false;
 
     Movie movie;
 
@@ -142,21 +143,23 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         Uri uri= MovieContract.MovieEntry.CONTENT_URI;
         String [] projection={MovieContract.MovieEntry._ID,
                 MovieContract.MovieEntry.MOVIE_ID};
-        String [] selection= {MovieContract.MovieEntry.MOVIE_ID+ "=?"};
+        String selection= MovieContract.MovieEntry.MOVIE_ID+ "=?";
         String[] selectionArgs={String.valueOf(movie_id)};
 
 
-        Cursor cursor=getContentResolver().query( uri,projection, String.valueOf(selection),selectionArgs,null);
+        Cursor cursor=getContentResolver().query( uri,projection,selection,selectionArgs,null);
 
         int containerCursor=cursor.getCount();
 
-        int cursorMovieId=cursor.getInt(Integer.parseInt(MovieContract.MovieEntry.MOVIE_ID));
         MenuItem favoriteIcon= menu.getItem(0);
 
         if(containerCursor == 0) {
             favoriteIcon.setIcon(R.drawable.ic_favorite_border);
+            favoriteMovie=false;
         }else {
             favoriteIcon.setIcon(R.drawable.ic_favorite);
+            favoriteMovie=true;
+
         }
         return true;
 
@@ -182,10 +185,9 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.favorite_heart:
-                if(movieDbId != -1){
+                if(favoriteMovie == false){
                     item.setIcon(R.drawable.ic_favorite_border);
-                    removeMovie(movieDbId);
-                    movieDbId= -1;
+                    removeMovie(selectedMovie);
                 }else{
                     item.setIcon(R.drawable.ic_favorite);
                     movieDbId=addNewMovie(selectedMovie);
@@ -198,6 +200,8 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
 
     private long addNewMovie(Movie movie) {
 
+        selectedMovie=getIntent().getExtras().getParcelable("MOVIE_OBJECT");
+
         ContentValues favoriteContent = new ContentValues();
 
         favoriteContent.put(MovieContract.MovieEntry.MOVIE_NAME, movie.getMovieName());
@@ -207,13 +211,17 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         favoriteContent.put(MovieContract.MovieEntry.OVERVIEW, movie.getOverview());
         favoriteContent.put(MovieContract.MovieEntry.RELEASE_DATE, movie.getReleaseDate());
 
-        Uri uri=getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, favoriteContent);
+        Uri uri= getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, favoriteContent);
         String id2=uri.getPathSegments().get(1);
+
         return Long.parseLong(id2);
 
     }
 
     private void removeMovie(long id) {
+
+        selectedMovie=getIntent().getExtras().getParcelable("MOVIE_OBJECT");
+
         String stringId= Long.toString(id);
         Uri uri= MovieContract.MovieEntry.CONTENT_URI;
         uri= uri.buildUpon().appendPath(stringId).build();
