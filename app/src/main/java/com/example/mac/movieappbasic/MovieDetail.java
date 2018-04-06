@@ -187,7 +187,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
             case R.id.favorite_heart:
                 if(favoriteMovie == false){
                     item.setIcon(R.drawable.ic_favorite_border);
-                    removeMovie(selectedMovie);
+                    removeMovie(movieDbId);
                 }else{
                     item.setIcon(R.drawable.ic_favorite);
                     movieDbId=addNewMovie(selectedMovie);
@@ -200,7 +200,9 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
 
     private long addNewMovie(Movie movie) {
 
+
         selectedMovie=getIntent().getExtras().getParcelable("MOVIE_OBJECT");
+
 
         ContentValues favoriteContent = new ContentValues();
 
