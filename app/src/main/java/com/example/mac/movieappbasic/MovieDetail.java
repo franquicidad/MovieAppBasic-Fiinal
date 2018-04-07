@@ -78,6 +78,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         Intent intent = getIntent();
 
         final Movie movie = getIntent().getExtras().getParcelable("MOVIE_OBJECT");
+        selectedMovie=movie;
 
 
         String movieName = movie.getMovieName();
@@ -185,7 +186,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.favorite_heart:
-                if(favoriteMovie == false){
+                if(favoriteMovie == true){
                     item.setIcon(R.drawable.ic_favorite_border);
                     removeMovie(movieDbId);
                 }else{
@@ -206,14 +207,23 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
 
         ContentValues favoriteContent = new ContentValues();
 
-        favoriteContent.put(MovieContract.MovieEntry.MOVIE_NAME, movie.getMovieName());
-        favoriteContent.put(MovieContract.MovieEntry.MOVIE_ID, movie.getMovie_ID());
-        favoriteContent.put(String.valueOf(MovieContract.MovieEntry.MOVIE_IMAGE), movie.getPoster_path());
-        favoriteContent.put(String.valueOf(MovieContract.MovieEntry.RATING), movie.getVoteAverage());
-        favoriteContent.put(MovieContract.MovieEntry.OVERVIEW, movie.getOverview());
-        favoriteContent.put(MovieContract.MovieEntry.RELEASE_DATE, movie.getReleaseDate());
+        favoriteContent.put(MovieContract.MovieEntry.MOVIE_NAME, selectedMovie.getMovieName());
+        favoriteContent.put(MovieContract.MovieEntry.MOVIE_ID, selectedMovie.getMovie_ID());
+        favoriteContent.put(String.valueOf(MovieContract.MovieEntry.MOVIE_IMAGE), selectedMovie.getPoster_path());
+        favoriteContent.put(String.valueOf(MovieContract.MovieEntry.RATING), selectedMovie.getVoteAverage());
+        favoriteContent.put(MovieContract.MovieEntry.OVERVIEW, selectedMovie.getOverview());
+        favoriteContent.put(MovieContract.MovieEntry.RELEASE_DATE, selectedMovie.getReleaseDate());
+
 
         Uri uri= getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, favoriteContent);
+
+        if(uri !=null ){
+            favoriteMovie=true;
+        }else{
+            favoriteMovie=false;
+        }
+
+
         String id2=uri.getPathSegments().get(1);
 
         return Long.parseLong(id2);
@@ -228,7 +238,13 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         Uri uri= MovieContract.MovieEntry.CONTENT_URI;
         uri= uri.buildUpon().appendPath(stringId).build();
 
-        getContentResolver().delete(uri,null,null);
+
+        if (uri == null){
+            getContentResolver().delete(uri,null,null);
+            favoriteMovie= false;
+        }else{
+            favoriteMovie=true;
+        }
     }
 
     public void makeTrailer(int id){
