@@ -13,10 +13,15 @@ import com.example.mac.movieappbasic.Moviedata.MovieContract;
 
 public class Favorites extends AppCompatActivity {
 
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites_layout);
+
+
 
         Cursor cursor= getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,new String[]{
                         MovieContract.MovieEntry._ID,
@@ -30,5 +35,7 @@ public class Favorites extends AppCompatActivity {
                 null ,
                 null );
         startManagingCursor(cursor);
+
+
     }
 }

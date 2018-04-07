@@ -238,9 +238,9 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         Uri uri= MovieContract.MovieEntry.CONTENT_URI;
         uri= uri.buildUpon().appendPath(stringId).build();
 
+        int numOfRowsDeleted=getContentResolver().delete(uri,null,null);
 
-        if (uri == null){
-            getContentResolver().delete(uri,null,null);
+        if (numOfRowsDeleted>0){
             favoriteMovie= false;
         }else{
             favoriteMovie=true;
