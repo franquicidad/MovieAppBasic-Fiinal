@@ -234,7 +234,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
 
         selectedMovie=getIntent().getExtras().getParcelable("MOVIE_OBJECT");
 
-        String stringId= Long.toString(id);
+        String stringId= Long.toString(selectedMovie.getMovie_ID());
         Uri uri= MovieContract.MovieEntry.CONTENT_URI;
         uri= uri.buildUpon().appendPath(stringId).build();
 
