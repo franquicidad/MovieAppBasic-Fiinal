@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by mac on 16/04/18.
  */
 
-public class FavoriteAsynckTaskLoader extends AsyncTaskLoader<ArrayList<Movie> {
+public class FavoriteAsynckTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
 
 
     public FavoriteAsynckTaskLoader(Context context) {
@@ -36,13 +36,14 @@ public class FavoriteAsynckTaskLoader extends AsyncTaskLoader<ArrayList<Movie> {
 
         while (cursor.moveToNext()){
             String movieId=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry._ID));
-            String movieImage=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.MOVIE_IMAGE));
+            int movieImage=cursor.getString(Integer.parseInt(String.valueOf(cursor.getColumnIndex(MovieContract.MovieEntry.MOVIE_IMAGE)));
             String movieName=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.MOVIE_NAME));
             String movieOverview=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.OVERVIEW));
             String movieRating=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.RATING));
             String movieRelease=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.RELEASE_DATE));
 
-            Movie favMovie= Movie(movieId,movieImage,movieName,movieOverview,)
+
+            Movie favMovie= new Movie(movieName,movieId,movieImage,movieRating,movieOverview,movieRelease);
         }
         return null;
     }
