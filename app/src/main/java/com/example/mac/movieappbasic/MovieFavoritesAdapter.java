@@ -46,6 +46,8 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
     class MovieViewHolder extends RecyclerView.ViewHolder{
 
         public MovieViewHolder(View itemView) {
+
+
             super(itemView);
         }
     }

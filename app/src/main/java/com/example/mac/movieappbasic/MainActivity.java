@@ -113,19 +113,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (item.getItemId()) {
 
             case R.id.favorites:
-                Intent favIntent=new Intent(this,Favorites.class);
-                startActivity(favIntent);
-                Cursor cursor= getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,new String[]{
-                        MovieContract.MovieEntry._ID,
-                        MovieContract.MovieEntry.MOVIE_IMAGE,
-                        MovieContract.MovieEntry.MOVIE_NAME,
-                        MovieContract.MovieEntry.OVERVIEW,
-                        MovieContract.MovieEntry.RATING,
-                        MovieContract.MovieEntry.RELEASE_DATE},
-                        null,
-                        null,
-                        null);
-                startManagingCursor(cursor);
+
+
             case R.id.popular:
                 sortMode = MERGED_BASE_URL;
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, MainActivity.this);

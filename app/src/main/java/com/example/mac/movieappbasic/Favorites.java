@@ -1,5 +1,6 @@
 package com.example.mac.movieappbasic;
 
+import android.content.AsyncTaskLoader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import com.example.mac.movieappbasic.Moviedata.MovieDbHelper;
  * Created by mac on 22/03/18.
  */
 
-public class Favorites extends AppCompatActivity {
+public class Favorites extends AppCompatActivity implements AsyncTaskLoader{
 
 
     MovieDbHelper mDbHelper;
