@@ -15,14 +15,17 @@ import java.util.ArrayList;
 
 public class FavoriteAsynckTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
 
+    Context mContext;
 
     public FavoriteAsynckTaskLoader(Context context) {
         super(context);
+        mContext=context;
     }
+
 
     @Override
     public ArrayList<Movie> loadInBackground() {
-        Cursor cursor= getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,new String[]{
+        Cursor cursor= mContext.getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,new String[]{
                         MovieContract.MovieEntry._ID,
                         MovieContract.MovieEntry.MOVIE_IMAGE,
                         MovieContract.MovieEntry.MOVIE_NAME,
@@ -32,18 +35,21 @@ public class FavoriteAsynckTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> 
                 null,
                 null,
                 null);
-        startManagingCursor(cursor);
+
 
         while (cursor.moveToNext()){
-            String movieId=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry._ID));
-            int movieImage=cursor.getString(Integer.parseInt(String.valueOf(cursor.getColumnIndex(MovieContract.MovieEntry.MOVIE_IMAGE)));
+            int movieId= Integer.parseInt(cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry._ID)));
+            String movieImage=cursor.getString(Integer.parseInt(String.valueOf(cursor.getColumnIndex(MovieContract.MovieEntry.MOVIE_IMAGE))));
             String movieName=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.MOVIE_NAME));
             String movieOverview=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.OVERVIEW));
-            String movieRating=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.RATING));
+            Double movieRating= Double.valueOf(cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.RATING)));
             String movieRelease=cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.RELEASE_DATE));
 
 
             Movie favMovie= new Movie(movieName,movieId,movieImage,movieRating,movieOverview,movieRelease);
+
+            ArrayList<Movie> favList= new ArrayList<>();
+            favList.add(favMovie);
         }
         return null;
     }

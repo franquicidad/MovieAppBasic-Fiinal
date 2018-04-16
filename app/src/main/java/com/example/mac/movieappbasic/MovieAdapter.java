@@ -73,6 +73,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
         return arrayListAdapter.size();
     }
 
+
+    /**
+     *
+     * CREATE THE VIEWHOLDER CLASS!!!!
+     */
+
     class NumberViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView mainImage;

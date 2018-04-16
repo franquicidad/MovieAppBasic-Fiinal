@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 /**
  * Created by mac on 14/03/18.
@@ -47,8 +48,12 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
 
         public MovieViewHolder(View itemView) {
 
+            ImageView favMovieImage=(ImageView)itemView.findViewById(R.id.favoriteImage);
+
 
             super(itemView);
         }
     }
+
+
 }
