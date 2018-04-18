@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     GridLayoutManager gridLayoutManager;
     ArrayList<Movie> adapterArrayList;
     GridView gridView;
-    String sortMode = MERGED_BASE_URL;
+    String sortMode = "popular";
     private MovieAdapter mMovieAdapter;
     private RecyclerView mMovieList;
 
@@ -122,15 +122,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             case R.id.favorites:
 
-                sortMode= CONTENT_URI;
+                sortMode= "favorites";
 
 
             case R.id.popular:
-                sortMode = MERGED_BASE_URL;
+                sortMode = "popular";
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, MainActivity.this);
                 return true;
             case R.id.top_rated:
-                sortMode = MERGED_TOP_MOVIE;
+                sortMode = "topRated";
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, MainActivity.this);
                 return true;
 
