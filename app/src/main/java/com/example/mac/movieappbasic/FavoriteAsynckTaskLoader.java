@@ -2,6 +2,7 @@ package com.example.mac.movieappbasic;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 
 import com.example.mac.movieappbasic.Model.Movie;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 public class FavoriteAsynckTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
 
     Context mContext;
+
+    ArrayList<Movie> favList=new ArrayList<>();
 
     public FavoriteAsynckTaskLoader(Context context) {
         super(context);
@@ -47,10 +50,14 @@ public class FavoriteAsynckTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> 
 
 
             Movie favMovie= new Movie(movieName,movieId,movieImage,movieRating,movieOverview,movieRelease);
-
-            ArrayList<Movie> favList= new ArrayList<>();
             favList.add(favMovie);
+
+
+
         }
-        return null;
+
+
+
+        return favList;
     }
 }

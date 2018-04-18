@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.example.mac.movieappbasic.Moviedata.MovieContract.MovieEntry.BASE_CONTENT_URI;
+import static com.example.mac.movieappbasic.Moviedata.MovieContract.PATH_MOVIE_DB;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Movie>> {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/popular?api_key=";
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int NUM_LIST_ITEMS = 100;
     private static final int MOVIE_LOADER_ID = 1;
     private final String MERGED_BASE_URL = (BASE_URL + BuildConfig.API_KEY);
+    public static final Uri CONTENT_URI= BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE_DB).build();
+
     GridLayoutManager gridLayoutManager;
     ArrayList<Movie> adapterArrayList;
     GridView gridView;
@@ -90,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<ArrayList<Movie>> loader, ArrayList<Movie> data) {
 
+
+
         mMovieAdapter.addAll(data);
 
 
@@ -113,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (item.getItemId()) {
 
             case R.id.favorites:
+
+                sortMode= CONTENT_URI;
 
 
             case R.id.popular:

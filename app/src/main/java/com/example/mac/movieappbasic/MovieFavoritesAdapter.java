@@ -7,6 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.mac.movieappbasic.Model.Movie;
+
+import java.util.ArrayList;
 
 /**
  * Created by mac on 14/03/18.
@@ -16,6 +21,17 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
 
     private Context mContext;
     private Cursor mCursor;
+    private int mNumberItems;
+
+    ImageView favMovieImage;
+    TextView favId;
+    TextView movieName;
+    TextView overview;
+    TextView rating;
+    TextView relDate;
+
+
+    ArrayList<Movie> favArrayList= new ArrayList<>();
 
 
     /** Constructor using the context and the db cursor
@@ -28,6 +44,7 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
 
     @Override
     public MovieFavoritesAdapter.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         LayoutInflater inflater=LayoutInflater.from(mContext);
         View view= inflater.inflate(R.layout.favorites_layout,parent,false);
 
@@ -41,17 +58,21 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
 
     @Override
     public int getItemCount() {
-        return 0;
+        return favArrayList.size();
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder{
 
         public MovieViewHolder(View itemView) {
-
-            ImageView favMovieImage=(ImageView)itemView.findViewById(R.id.favoriteImage);
-
-
             super(itemView);
+
+            favMovieImage=(ImageView)itemView.findViewById(R.id.favoriteImage);
+            favId=(TextView)itemView.findViewById(R.id.movie_id);
+            movieName=(TextView)itemView.findViewById(R.id.favorite_movie_name);
+            overview=(TextView)itemView.findViewById(R.id.favorite_overview);
+            rating=(TextView)itemView.findViewById(R.id.favorite_rating);
+            relDate=(TextView)itemView.findViewById(R.id.favorite_r_date);
+
         }
     }
 

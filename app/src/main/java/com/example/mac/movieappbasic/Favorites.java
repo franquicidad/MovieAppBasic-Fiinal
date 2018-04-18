@@ -14,7 +14,7 @@ import com.example.mac.movieappbasic.Moviedata.MovieDbHelper;
  * Created by mac on 22/03/18.
  */
 
-public class Favorites extends AppCompatActivity implements AsyncTaskLoader{
+public class Favorites extends AppCompatActivity {
 
 
     MovieDbHelper mDbHelper;
