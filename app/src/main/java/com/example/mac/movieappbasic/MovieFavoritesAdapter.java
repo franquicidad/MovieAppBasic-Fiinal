@@ -54,6 +54,15 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
     @Override
     public void onBindViewHolder(MovieFavoritesAdapter.MovieViewHolder holder, int position) {
 
+        Movie movieOnBind=favArrayList.get(position);
+
+
+        favId.setText(movieOnBind.getMovie_ID());
+        movieName.setText(movieOnBind.getMovieName());
+        overview.setText(movieOnBind.getOverview());
+        rating.setText(String.valueOf(movieOnBind.getVoteAverage()));
+        relDate.setText(movieOnBind.getReleaseDate());
+
 
 
     }

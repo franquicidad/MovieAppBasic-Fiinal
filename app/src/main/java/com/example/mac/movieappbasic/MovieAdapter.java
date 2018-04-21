@@ -76,14 +76,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
         holder.bind(position);
 
 
-        Movie movieOnBind=arrayListAdapter.get(position);
 
-        favId=holder.
-        favId.setText(movieOnBind.getMovie_ID());
-        movieName.setText(movieOnBind.getMovieName());
-        overview.setText(movieOnBind.getOverview());
-        rating.setText(String.valueOf(movieOnBind.getVoteAverage()));
-        relDate.setText(movieOnBind.getReleaseDate());
 
     }
 
