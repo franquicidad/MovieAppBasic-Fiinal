@@ -54,6 +54,8 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
     @Override
     public void onBindViewHolder(MovieFavoritesAdapter.MovieViewHolder holder, int position) {
 
+
+
     }
 
     @Override

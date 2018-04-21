@@ -26,23 +26,6 @@ public class Favorites extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites_layout);
 
-        final SQLiteDatabase db=mDbHelper.getReadableDatabase();
-
-
-
-
-        Cursor cursor= getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,new String[]{
-                        MovieContract.MovieEntry._ID,
-                        MovieContract.MovieEntry.MOVIE_IMAGE,
-                        MovieContract.MovieEntry.MOVIE_NAME,
-                        MovieContract.MovieEntry.OVERVIEW,
-                        MovieContract.MovieEntry.RATING,
-                        MovieContract.MovieEntry.RELEASE_DATE
-                },
-                null ,
-                null ,
-                null );
-        startManagingCursor(cursor);
 
 
     }

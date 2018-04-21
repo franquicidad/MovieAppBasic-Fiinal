@@ -28,6 +28,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
     ArrayList<Movie> arrayListAdapter = new ArrayList<>();
 
 
+    ImageView favMovieImage;
+    TextView favId;
+    TextView movieName;
+    TextView overview;
+    TextView rating;
+    TextView relDate;
+
+
     public interface GridItemClickListener {
         void onGridItemClick(Movie movie);
     }
@@ -64,7 +72,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
     @Override
     public void onBindViewHolder(MovieAdapter.NumberViewHolder holder, int position) {
 
+
         holder.bind(position);
+
+
+        Movie movieOnBind=arrayListAdapter.get(position);
+
+        favId=holder.
+        favId.setText(movieOnBind.getMovie_ID());
+        movieName.setText(movieOnBind.getMovieName());
+        overview.setText(movieOnBind.getOverview());
+        rating.setText(String.valueOf(movieOnBind.getVoteAverage()));
+        relDate.setText(movieOnBind.getReleaseDate());
 
     }
 
@@ -89,6 +108,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
 
             mainImage = itemView.findViewById(R.id.cardview_image);
             movieText = itemView.findViewById(R.id.movie_textView);
+
+            favMovieImage=(ImageView)itemView.findViewById(R.id.favoriteImage);
+            favId=(TextView)itemView.findViewById(R.id.movie_id);
+            movieName=(TextView)itemView.findViewById(R.id.favorite_movie_name);
+            overview=(TextView)itemView.findViewById(R.id.favorite_overview);
+            rating=(TextView)itemView.findViewById(R.id.favorite_rating);
+            relDate=(TextView)itemView.findViewById(R.id.favorite_r_date);
+
 
             itemView.setOnClickListener(this);
         }

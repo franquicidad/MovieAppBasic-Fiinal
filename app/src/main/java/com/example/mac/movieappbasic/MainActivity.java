@@ -1,6 +1,6 @@
 package com.example.mac.movieappbasic;
 
-import android.content.AsyncTaskLoader;
+import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -87,11 +87,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (sortMode){
             case "favorites":
                 return new FavoriteAsynckTaskLoader(this);
+            case "popular":
+                return new MovieAsynctaskLoader(this,MERGED_BASE_URL);
+            case "topRated":
+                return new MovieAsynctaskLoader(this,MERGED_TOP_MOVIE);
+
+                default:
+                    return new MovieAsynctaskLoader(this,MERGED_BASE_URL);
         }
-
-
-        return new
-                MovieAsynctaskLoader(this, sortMode);
     }
 
     @Override
