@@ -61,4 +61,9 @@ public class FavoriteAsynckTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> 
 
         return favList;
     }
+
+    @Override
+    protected void onStartLoading() {
+        forceLoad();
+    }
 }

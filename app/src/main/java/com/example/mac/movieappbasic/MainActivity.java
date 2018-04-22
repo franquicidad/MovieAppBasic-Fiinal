@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     String sortMode = MERGED_BASE_URL;
     private MovieAdapter mMovieAdapter;
     private RecyclerView mMovieList;
+    private MovieFavoritesAdapter mMovieFavoritesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +70,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             }
         });
-        mMovieList.setAdapter(mMovieAdapter);
-        adapterArrayList = new ArrayList<>();
-        mMovieAdapter.addAll(adapterArrayList);
+
+        if(sortMode == "favorites"){
+            mMovieList.setAdapter(mMovieFavoritesAdapter);
+            adapterArrayList=new ArrayList<>();
+            mMovieFavoritesAdapter.FavoritesAddAll(adapterArrayList);
+        }else{
+            mMovieList.setAdapter(mMovieAdapter);
+            adapterArrayList = new ArrayList<>();
+            mMovieAdapter.addAll(adapterArrayList);
+        }
+
 
         LoaderManager loaderManager = getSupportLoaderManager();
 
@@ -100,11 +109,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<ArrayList<Movie>> loader, ArrayList<Movie> data) {
 
-
-
-        mMovieAdapter.addAll(data);
-
-
+        if (sortMode == "favorites") {
+            mMovieFavoritesAdapter.FavoritesAddAll(data);
+        } else {
+            mMovieAdapter.addAll(data);
+        }
     }
 
     @Override
@@ -128,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 sortMode="favorites";
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, MainActivity.this);
+                Intent favIntent= new Intent(this,Favorites.class);
+                startActivity(favIntent);
                 return true;
 
             case R.id.popular:

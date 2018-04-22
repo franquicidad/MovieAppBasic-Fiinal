@@ -51,6 +51,13 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
         return new MovieViewHolder(view);
     }
 
+    public void FavoritesAddAll(ArrayList<Movie> movies){
+        favArrayList.clear();
+
+        favArrayList.addAll(movies);
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(MovieFavoritesAdapter.MovieViewHolder holder, int position) {
 
