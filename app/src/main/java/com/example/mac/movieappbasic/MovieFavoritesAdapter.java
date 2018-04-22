@@ -23,6 +23,8 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
     private Cursor mCursor;
     private int mNumberItems;
 
+    public ArrayList<Movie> listMovie;
+
     ImageView favMovieImage;
     TextView favId;
     TextView movieName;
@@ -34,13 +36,15 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
     ArrayList<Movie> favArrayList= new ArrayList<>();
 
 
+    public MovieFavoritesAdapter(Context context,ArrayList<Movie> favArrayList) {
+        this.favArrayList = favArrayList;
+        this.mContext=context;
+    }
+
     /** Constructor using the context and the db cursor
      *
      */
-    public MovieFavoritesAdapter(Context mContext, Cursor mCursor) {
-        this.mContext = mContext;
-        this.mCursor = mCursor;
-    }
+
 
     @Override
     public MovieFavoritesAdapter.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
