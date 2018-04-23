@@ -29,12 +29,6 @@ public class Favorites extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites_layout);
 
-        favRecycler=(RecyclerView)findViewById(R.id.rv_favorites);
-
-        LinearLayoutManager favLinear=new LinearLayoutManager(this);
-        favRecycler.setLayoutManager(favLinear);
-
-        MovieFavoritesAdapter movieFavoritesAdapter=new MovieFavoritesAdapter()
 
 
 
