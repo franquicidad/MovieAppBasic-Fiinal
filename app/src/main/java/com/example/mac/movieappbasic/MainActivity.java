@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        if(sortMode == "favorites"){
+        if(sortMode.equals("favorites")){
             mMovieList.setAdapter(mMovieFavoritesAdapter);
             adapterArrayList=new ArrayList<>();
             mMovieFavoritesAdapter.FavoritesAddAll(adapterArrayList);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<ArrayList<Movie>> loader, ArrayList<Movie> data) {
 
-        if (sortMode == "favorites") {
+        if (sortMode.equals("favorites")) {
             mMovieFavoritesAdapter.FavoritesAddAll(data);
         } else {
             mMovieAdapter.addAll(data);
