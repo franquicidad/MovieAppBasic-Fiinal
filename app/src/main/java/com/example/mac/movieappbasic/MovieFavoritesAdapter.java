@@ -33,7 +33,7 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
     TextView relDate;
 
 
-    ArrayList<Movie> favArrayList=new  ArrayList<>();
+    ArrayList<Movie> favArrayList;
 
 
     public MovieFavoritesAdapter(Context context,ArrayList<Movie> favArrayList) {
