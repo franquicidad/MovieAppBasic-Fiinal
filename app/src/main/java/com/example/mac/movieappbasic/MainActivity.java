@@ -53,23 +53,32 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mMovieList = findViewById(R.id.rv_movies);
         gridView = findViewById(R.id.gridview_layout);
 
-        gridLayoutManager = new GridLayoutManager(this, 2);
-        mMovieList.setLayoutManager(gridLayoutManager);
-        mMovieList.setHasFixedSize(true);
-        mMovieAdapter = new MovieAdapter(this, NUM_LIST_ITEMS, new MovieAdapter.GridItemClickListener() {
+        if(sortMode.equals("favorites")){
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+            mMovieList.setLayoutManager(linearLayoutManager);
+            mMovieList.setHasFixedSize(true);
 
-            @Override
-            public void onGridItemClick(Movie movie) {
+        }else {
 
-                Intent intentDetailActivity = new Intent(getBaseContext(), MovieDetail.class);
+            gridLayoutManager = new GridLayoutManager(this, 2);
+            mMovieList.setLayoutManager(gridLayoutManager);
+            mMovieList.setHasFixedSize(true);
+            mMovieAdapter = new MovieAdapter(this, NUM_LIST_ITEMS, new MovieAdapter.GridItemClickListener() {
 
-                intentDetailActivity.putExtra("MOVIE_OBJECT", movie);
+                @Override
+                public void onGridItemClick(Movie movie) {
 
-                startActivity(intentDetailActivity);
+                    Intent intentDetailActivity = new Intent(getBaseContext(), MovieDetail.class);
+
+                    intentDetailActivity.putExtra("MOVIE_OBJECT", movie);
+
+                    startActivity(intentDetailActivity);
 
 
-            }
-        });
+                }
+            });
+        }
+
 
         if(sortMode.equals("favorites")){
             mMovieFavoritesAdapter=new MovieFavoritesAdapter(this,adapterArrayList);
@@ -113,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (sortMode.equals("favorites")) {
             mMovieFavoritesAdapter=new MovieFavoritesAdapter(this,data);
             mMovieList.setAdapter(mMovieFavoritesAdapter);
-            mMovieFavoritesAdapter.FavoritesAddAll(data);
+//            mMovieFavoritesAdapter.FavoritesAddAll(data);
         } else {
             mMovieAdapter.addAll(data);
         }

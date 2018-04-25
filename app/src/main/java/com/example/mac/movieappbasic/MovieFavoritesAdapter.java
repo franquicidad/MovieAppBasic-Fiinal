@@ -69,7 +69,7 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
         Movie movieOnBind=favArrayList.get(position);
 
 
-        favId.setText(movieOnBind.getMovie_ID());
+        favId.setText(Integer.toString(movieOnBind.getMovie_ID()));
         movieName.setText(movieOnBind.getMovieName());
         overview.setText(movieOnBind.getOverview());
         rating.setText(String.valueOf(movieOnBind.getVoteAverage()));
