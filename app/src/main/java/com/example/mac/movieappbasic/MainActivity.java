@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     String sortMode = "popular";
     private MovieAdapter mMovieAdapter;
     private RecyclerView mMovieList;
-    private RecyclerView mfavoriteList;
     private MovieFavoritesAdapter mMovieFavoritesAdapter;
 
     @Override
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mMovieList = findViewById(R.id.rv_movies);
         gridView = findViewById(R.id.gridview_layout);
-        mfavoriteList=findViewById(R.id.rv_favorites);
 
         gridLayoutManager = new GridLayoutManager(this, 2);
         mMovieList.setLayoutManager(gridLayoutManager);
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         if(sortMode.equals("favorites")){
             mMovieFavoritesAdapter=new MovieFavoritesAdapter(this,adapterArrayList);
-            mfavoriteList.setAdapter(mMovieFavoritesAdapter);
+            mMovieList.setAdapter(mMovieFavoritesAdapter);
             adapterArrayList=new ArrayList<>();
             mMovieFavoritesAdapter.FavoritesAddAll(adapterArrayList);
         }else{
@@ -114,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         if (sortMode.equals("favorites")) {
             mMovieFavoritesAdapter=new MovieFavoritesAdapter(this,data);
-            mfavoriteList.setAdapter(mMovieFavoritesAdapter);
+            mMovieList.setAdapter(mMovieFavoritesAdapter);
             mMovieFavoritesAdapter.FavoritesAddAll(data);
         } else {
             mMovieAdapter.addAll(data);
@@ -142,8 +140,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 sortMode="favorites";
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, MainActivity.this);
-                Intent favIntent= new Intent(this,Favorites.class);
-                startActivity(favIntent);
                 return true;
 
             case R.id.popular:
