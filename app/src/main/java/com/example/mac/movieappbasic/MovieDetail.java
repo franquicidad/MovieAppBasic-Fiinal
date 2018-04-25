@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +60,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
     Button favButton;
     ReviewAdapter reviewAdapter;
     RecyclerView TrailerRv;
-    RecyclerView ReviewRv;
+    ListView Reviewlv;
     static String moviesReview;
     TrailersAdapter trailersAdapter;
     Movie selectedMovie=null;
@@ -106,21 +107,18 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         ratingDetail = findViewById(R.id.text_movie_rating);
         ratingDetail.setText(String.valueOf(voteAverage));
 
-        review = findViewById(R.id.review);
-        review.setText(moviesReview);
+        review = findViewById(R.id.review_content);
 
         overview = findViewById(R.id.text_movie_overview);
-        overview.setText(overview1);
 
 
         TrailerRv = (RecyclerView) findViewById(R.id.trailers_rv);
-        ReviewRv=findViewById(R.id.reviews_rv);
+
+        Reviewlv=findViewById(R.id.review_lv);
 
 
 
         TrailerRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-
-
 
 
                 Toast.makeText(getBaseContext(), "Movie successfully added to favorites", Toast.LENGTH_LONG).show();
@@ -388,7 +386,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         @Override
         protected void onPostExecute(List<Review> reviews) {
             reviewAdapter=new ReviewAdapter(getApplicationContext(),reviews);
-            ReviewRv.setAdapter(reviewAdapter);
+            Reviewlv.setAdapter(reviewAdapter);
 
 
 
@@ -406,6 +404,11 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
             for(int i = 0; i < reviewsList.length(); i++){
                 JSONObject review = reviewsList.getJSONObject(i);
 
+                String author1="anonymous";
+                if(review.has("author")){
+                    author1=review.getString("author");
+                }
+
 
                 String content = "N/A";
                 if(review.has("content")){
@@ -414,7 +417,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
                     }
 
                 }
-                finalReviewsList.add(new Review(content));
+                finalReviewsList.add(new Review(content,author1));
             }
         }
 
