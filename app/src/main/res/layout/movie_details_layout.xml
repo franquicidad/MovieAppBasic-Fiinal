@@ -21,9 +21,9 @@
                 android:layout_height="400dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:scaleType="fitXY"
                 android:layout_weight="2"
-                android:paddingTop="10dp" />
+                android:paddingTop="10dp"
+                android:scaleType="fitXY" />
 
             <TextView
                 android:id="@+id/text_movie_name"
@@ -56,28 +56,27 @@
         </RelativeLayout>
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
+
             <ListView
+                android:id="@+id/review_lv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/review_lv">
+                android:layout_height="wrap_content">
 
             </ListView>
 
         </LinearLayout>
 
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
             android:text="Trailers:"
-            android:textSize="22sp"/>
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -103,9 +102,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
+                android:gravity="center"
                 android:paddingTop="15dp"
                 android:text="Rating:"
-                android:gravity="center"
 
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
@@ -116,8 +115,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:hint="7.9"
                 android:gravity="center"
+                android:hint="7.9"
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
@@ -125,11 +124,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
-                android:paddingTop="40dp"
                 android:gravity="center"
-
-                android:stepSize="1"
                 android:numStars="5"
+                android:paddingTop="40dp"
+                android:stepSize="1"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

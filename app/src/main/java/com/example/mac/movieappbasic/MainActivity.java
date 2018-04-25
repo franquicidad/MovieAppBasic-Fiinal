@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mMovieList.setLayoutManager(linearLayoutManager);
             mMovieList.setHasFixedSize(true);
         } else {
+            gridLayoutManager = new GridLayoutManager(this, 2);
+            mMovieList.setLayoutManager(gridLayoutManager);
             mMovieList.setAdapter(mMovieAdapter);
             mMovieAdapter.addAll(data);
         }
