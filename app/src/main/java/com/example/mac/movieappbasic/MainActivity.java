@@ -53,12 +53,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mMovieList = findViewById(R.id.rv_movies);
         gridView = findViewById(R.id.gridview_layout);
 
-        if(sortMode.equals("favorites")){
-            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
-            mMovieList.setLayoutManager(linearLayoutManager);
-            mMovieList.setHasFixedSize(true);
 
-        }else {
 
             gridLayoutManager = new GridLayoutManager(this, 2);
             mMovieList.setLayoutManager(gridLayoutManager);
@@ -77,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 }
             });
-        }
+
 
 
         if(sortMode.equals("favorites")){
@@ -123,6 +118,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mMovieFavoritesAdapter=new MovieFavoritesAdapter(this,data);
             mMovieList.setAdapter(mMovieFavoritesAdapter);
 //            mMovieFavoritesAdapter.FavoritesAddAll(data);
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+            mMovieList.setLayoutManager(linearLayoutManager);
+            mMovieList.setHasFixedSize(true);
         } else {
             mMovieAdapter.addAll(data);
         }
