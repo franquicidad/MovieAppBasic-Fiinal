@@ -57,7 +57,9 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
     TextView review;
     TextView overview;
     Button favButton;
+    ReviewAdapter reviewAdapter;
     RecyclerView TrailerRv;
+    RecyclerView ReviewRv;
     static String moviesReview;
     TrailersAdapter trailersAdapter;
     Movie selectedMovie=null;
@@ -112,6 +114,8 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
 
 
         TrailerRv = (RecyclerView) findViewById(R.id.trailers_rv);
+        ReviewRv=findViewById(R.id.reviews_rv);
+
 
 
         TrailerRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
@@ -383,7 +387,11 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
 
         @Override
         protected void onPostExecute(List<Review> reviews) {
-            super.onPostExecute(reviews);
+            reviewAdapter=new ReviewAdapter(getApplicationContext(),reviews);
+            ReviewRv.setAdapter(reviewAdapter);
+
+
+
         }
     }
 

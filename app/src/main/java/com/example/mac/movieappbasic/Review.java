@@ -6,13 +6,20 @@ package com.example.mac.movieappbasic;
 
 public class Review {
 
+    private String mAuthor;
+
     private String mContent;
 
-    public Review(String mContent) {
+    public Review(String mContent,String mAuthor) {
         this.mContent = mContent;
+        this.mAuthor=mAuthor;
     }
 
     public String getmContent() {
         return mContent;
+    }
+
+    public String getmAuthor() {
+        return mAuthor;
     }
 }
