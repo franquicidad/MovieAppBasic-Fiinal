@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mac.movieappbasic.Model.Movie;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -73,6 +74,10 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
         overview.setText(movieOnBind.getOverview());
         rating.setText(String.valueOf(movieOnBind.getVoteAverage()));
         relDate.setText(movieOnBind.getReleaseDate());
+
+        String favMovieIm=movieOnBind.getPoster_path();
+
+        Picasso.with(mContext).load(favMovieIm).into(favMovieImage);
 
 
 
