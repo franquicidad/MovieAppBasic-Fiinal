@@ -110,6 +110,7 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         review = findViewById(R.id.review_content);
 
         overview = findViewById(R.id.text_movie_overview);
+        overview.setText(overview1);
 
 
         TrailerRv = (RecyclerView) findViewById(R.id.trailers_rv);
