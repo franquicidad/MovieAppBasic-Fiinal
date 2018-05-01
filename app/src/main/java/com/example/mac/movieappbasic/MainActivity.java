@@ -1,5 +1,6 @@
 package com.example.mac.movieappbasic;
 
+import android.nfc.Tag;
 import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView mMovieList;
     private MovieFavoritesAdapter mMovieFavoritesAdapter;
 
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mMovieList.setAdapter(mMovieFavoritesAdapter);
             adapterArrayList=new ArrayList<>();
             mMovieFavoritesAdapter.FavoritesAddAll(adapterArrayList);
+
         }else{
             mMovieList.setAdapter(mMovieAdapter);
             adapterArrayList = new ArrayList<>();
@@ -121,6 +127,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
             mMovieList.setLayoutManager(linearLayoutManager);
             mMovieList.setHasFixedSize(true);
+            if(mMovieList ==null){
+                Toast.makeText(this,"There are no Favorite movies , please select one",Toast.LENGTH_LONG).show();
+            }
         } else {
             gridLayoutManager = new GridLayoutManager(this, 2);
             mMovieList.setLayoutManager(gridLayoutManager);

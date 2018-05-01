@@ -28,6 +28,6 @@ public class MovieContract {
         public static final String OVERVIEW="overview";
         public static final String MOVIE_NAME="movieName";
         public static final String RATING="rating";
-        public static final String RELEASE_DATE="release";
+        public static final String RELEASE_DATE="release_date";
     }
 }
