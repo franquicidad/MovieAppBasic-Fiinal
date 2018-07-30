@@ -17,6 +17,7 @@
             android:id="@+id/cardview_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:transitionName="movies_imageview"
             android:scaleType="fitXY" />
 
         <TextView
@@ -24,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="135dp"
+            android:transitionName="movies_title"
             android:layout_marginTop="185dp" />
 
 

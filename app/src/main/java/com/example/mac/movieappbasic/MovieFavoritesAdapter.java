@@ -102,6 +102,4 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
 
         }
     }
-
-
 }

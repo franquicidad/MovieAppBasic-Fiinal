@@ -1,6 +1,8 @@
 package com.example.mac.movieappbasic;
 
+import android.app.ActivityOptions;
 import android.nfc.Tag;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                     intentDetailActivity.putExtra("MOVIE_OBJECT", movie);
 
+
+
+
                     startActivity(intentDetailActivity);
 
 
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
             mMovieList.setLayoutManager(linearLayoutManager);
             mMovieList.setHasFixedSize(true);
-            if(mMovieList ==null){
+            if(adapterArrayList.isEmpty()){
                 Toast.makeText(this,"There are no Favorite movies , please select one",Toast.LENGTH_LONG).show();
             }
         } else {
