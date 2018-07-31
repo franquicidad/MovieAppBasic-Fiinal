@@ -16,11 +16,17 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -45,13 +51,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     ArrayList<Movie> adapterArrayList;
     GridView gridView;
     String sortMode = "popular";
+    private Context context;
     private MovieAdapter mMovieAdapter;
     private RecyclerView mMovieList;
     private MovieFavoritesAdapter mMovieFavoritesAdapter;
 
 
     private static final String TAG = MainActivity.class.getSimpleName();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +81,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                     intentDetailActivity.putExtra("MOVIE_OBJECT", movie);
 
+                  Slide explode=new Slide();
+                   explode.setDuration(500);
+                   explode.setSlideEdge(Gravity.TOP);
+                    getWindow().setEnterTransition(explode);
+                   getWindow().setReenterTransition(explode);
 
 
 
-                    startActivity(intentDetailActivity);
+                   startActivity(intentDetailActivity,
+                           ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());//lisujtouuuuu
+                    //jajajajaja buenaaaaaa
 
 
                 }
@@ -103,6 +116,49 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         loaderManager.initLoader(MOVIE_LOADER_ID, null, MainActivity.this);
 
+        //yo opino que uses mejor el retroseso normal... el metodo onBackPressed
+
+        //pues si dale toco asi
+        //
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Explode explode=new Explode();
+        explode.setDuration(500);
+        getWindow().setEnterTransition(explode);
+        getWindow().setReenterTransition(explode);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Explode explode=new Explode();
+        explode.setDuration(500);
+        getWindow().setEnterTransition(explode);
+        getWindow().setReenterTransition(explode);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Explode explode=new Explode();
+        explode.setDuration(500);
+        getWindow().setEnterTransition(explode);
+        getWindow().setReenterTransition(explode);
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Explode explode=new Explode();
+        explode.setDuration(500);
+        getWindow().setEnterTransition(explode);
+        getWindow().setReenterTransition(explode);
     }
 
 
@@ -144,9 +200,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+
+
     @Override
     public void onLoaderReset(Loader<ArrayList<Movie>> loader) {
-
+        Explode explode=new Explode();
+        explode.setDuration(500);
+        getWindow().setEnterTransition(explode);
+        getWindow().setReenterTransition(explode);
     }
 
     @Override

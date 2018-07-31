@@ -16,16 +16,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.mac.movieappbasic.JsonUtils.JsonParsingMovie;
 import com.example.mac.movieappbasic.Model.Movie;
@@ -78,6 +85,13 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_details_layout);
 
+
+
+        Slide ejemplo = new Slide();
+        Window window=getWindow();
+        ejemplo.setSlideEdge(Gravity.RIGHT);
+
+        window.setEnterTransition(ejemplo);
         Intent intent = getIntent();
 
         final Movie movie = getIntent().getExtras().getParcelable("MOVIE_OBJECT");
@@ -116,6 +130,11 @@ public class MovieDetail extends AppCompatActivity implements LoaderManager.Load
         TrailerRv = (RecyclerView) findViewById(R.id.trailers_rv);
 
         Reviewlv=findViewById(R.id.review_lv);
+
+//        Explode explode=new Explode();
+//        getWindow().setEnterTransition(explode);
+
+
 
 
 
